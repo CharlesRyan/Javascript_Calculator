@@ -1,0 +1,65 @@
+body {
+    background-color: #818181;
+    font-family: 'Orbitron', sans-serif;
+}
+button {
+    background-color: yellow;
+    width: 43px;
+    height: 32px;
+    margin: 5px;
+    font-weight: bold;
+    font-size: 1.2em;
+    transform: translate(0px, 3px);
+    max-width: 80px;
+    border-radius: 11px;
+    font-family: 'Orbitron', sans-serif;
+}
+.operator {
+    background-color: green;
+}
+#equals {
+    background-color: lawngreen;
+}
+#outline {
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 240px;
+    background-color: black;
+    padding: 20px 10px;
+    margin: 50px 0px;
+    border: 2px solid #908b85;
+    border-radius: 20px;
+    box-shadow: 7px 10px 34px 1px rgba(0, 0, 0, 0.68), inset -1px -6px 12px 0.1px #89847e;
+}
+#title {
+    margin-bottom: 0px;
+}
+#output {
+    width: 80%;
+    margin: 5px;
+    text-align: right;
+    font-weight: bold;
+    font-size: 1.5em;
+    font-family: 'Orbitron', sans-serif;
+}
+#current {
+    width: 80%;
+    margin: 5px;
+    text-align: right;
+    font-size: 1em;
+    font-family: 'Orbitron', sans-serif;
+}
+.clear {
+    background-color: darkred;
+    display: flex;
+    justify-content: center;
+}
+#container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.lineBreak {
+    width: 100%;
+}
