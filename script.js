@@ -1,23 +1,97 @@
-document.addEventListener("DOMContentLoaded", function (event) { 
+document.addEventListener("DOMContentLoaded", function(event) { 
     
     var resultArray = [],
         result,
-        decimal = false;
+        decFlag = false,
+        numFlag = false,
+        tenKey = /[0-9]/g;
     
-    var output = document.getElementById("output"),
-        outline = document.getElementById("outline"),
+    var outline = document.getElementById("outline"),
         ce = document.getElementById("ce"),
-        current = document.getElementById("current"),
+        ac = document.getElementById("ac"),
         equals = document.getElementById("equals");
     
+    var main = {
+        output: document.getElementById("output"),
+        current: document.getElementById("current"),
+        
+        // inputs shown with operators
+        displayCurrent: function(a) {
+            a = a.join('');
+            this.current.value = a;
+        },
+    
+        displayOutput: function (b) {
+        // final result with rounding in the case of a decimal
+            let c = round(b, String(b));
+            this.output.value = c;
+        },
+        
+        //no inputs, only destruction
+        clearer: function() {
+            this.output.value = 0;
+            this.current.value = '';
+            decFlag = false;
+            numFlag = false;
+            resultArray = [];
+        },
+        
+        evaluate: function(input) {
+            input = input.join("");
+            result = eval(input);
+            this.displayOutput(result);
+    }
+        
+    }
 
+    
+    
+    
     ce.addEventListener('click', function(){
-        clearer();
+        main.clearer();
     });
+    ac.addEventListener('click', function(){
+        main.clearer();
+    });
+
+
     equals.addEventListener('click', function(){
-        evaluate(resultArray);
+        main.evaluate(resultArray);
     });
     
+    function decCheck(input) {
+        //check no more than one decimal per number
+        if (decFlag === true && input === '.') {
+            input = '';
+        } else if (decFlag === false && input ==='.') {
+            decFlag = true;
+            if (numFlag === false) {
+                //most recent keypress non-numerical
+                input = "0.";
+            }
+        } else if (input === "+" || input === "-" || input === "/" || input === "*") {
+            //reset
+            decFlag = false;
+        }
+    
+    return input;
+    }
+    
+    function numCheck(input) {
+        //check if most recent keypress is numerical
+        if (input.match(tenKey)) {
+            numFlag = true;
+        } else {
+            numflag = false;
+        }
+    }
+    
+    function round(c, str) {
+        if (str.indexOf(".") !== -1) {
+                    c = c.toFixed(2);
+                }
+        return c;
+    }
     
    
     // push keypress to resultArray and check decimals then display 
@@ -26,52 +100,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var target = e.target || e.srcElement,
         num = target.value;
         
-    //check no more than one decimal per number
-    if (decimal === true && num ==='.') {
-        num = '';
-    } else if (decimal === false & num ==='.') {
-        decimal = true;
-    } else if (num === "+" || num === "-" || num === "/" || num === "*") {
-        decimal = false;
-    }
+    num = decCheck(num);
+    console.log(num);
+    numCheck(num);  
         
     //not undefined and not equal button
-    if (num && num !== "=") {
+    if (num && num !== "=") {    
+            //breaking the chain of operations with a numeric or decimal entry
+            if (main.output.value !== 0 && (num.match(tenKey) || num === ".")) {
+                main.output.value = 0;
+                main.current.value = 0;
+            } 
         resultArray.push(num);
-        console.log(num);
-        displayCurrent(resultArray);
+        main.displayCurrent(resultArray);
     }
     });
  
-
-    // inputs shown with operators
-    function displayCurrent(a) {
-        a = a.join('');
-        current.value = a;
-    }
-    
-    // final result
-    function displayOutput(b) {
-        output.value = b;
-    }
-    
-    function evaluate(input) {
-        input = input.join("");
-        result = eval(input);
-        displayOutput(result);
-    }
-    
-    //no inputs, only destruction
-    function clearer() {
-        output.value = 0;
-        current.value = '';
-        resultArray = [];
-    }
-
-    
-    
-
-
 });
+
+
 
     
